@@ -4,11 +4,17 @@
       <b>Game Id:</b> {{ id }}
     </div>
     <ul class="game-content">
-      <li> host: {{ hostTeam }}</li>
-      <li> guest: {{ guestTeam }}</li>
-      <li> date: {{ date }}</li>
-      <li> time: {{ hour }}</li>
+      <li v-on:click="TeamPage(homeTeam)"> Home Team:</li>
+      <b-button v-on:click="TeamPage(homeTeam)">{{ homeTeam }}</b-button>
+      <li v-on:click="TeamPage(awayTeam)"> Away Team:</li>
+      <b-button v-on:click="TeamPage(awayTeam)">{{ awayTeam }}</b-button>
+      <li> Date: {{ date }}</li>
+      <li> Time: {{ hours }}</li>
+      <li> Venue: {{ field }}</li>
     </ul>
+    <div class="buttonPress">
+      <button-press v-on:click="Like(id)" color="cyan" size="l">Like</button-press>
+    </div>
   </div>
 </template>
 
@@ -20,11 +26,11 @@ export default {
         type: Number,
         required: true
       },
-      hostTeam: {
+      homeTeam: {
         type: String,
         required: true
       },
-      guestTeam: {
+      awayTeam: {
         type: String,
         required: true
       },
@@ -32,11 +38,35 @@ export default {
         type: String,
         required: true
       },
-      hour: {
+      hours: {
         type: String,
         required: true
+      },
+      field: {
+        type: String,
+        require: true
       }
   }, 
+  methods: {
+    TeamPage(team) {
+      this.$root.store.setTeam(team);
+      this.$router.push("/team");
+    },
+    async Like(targetID) {
+      try {
+        const response = await this.axios.post(
+          "http://localhost:3000/users/favoriteGames",
+          {
+            game_id: targetID,
+            type: 'game'
+          },
+          {withCredentials: true}
+        );
+      } catch(error) {
+        window.alert('Game Already been Liked')
+      }
+    }
+  },
   mounted(){
     console.log("game preview mounted")
   } 
@@ -47,7 +77,7 @@ export default {
 .game-preview {
   display: inline-block;
   width: 250px;
-  height: 200px;
+  height: 300px;
   position: relative;
   margin: 10px 10px;
   border-style: solid;
@@ -67,6 +97,9 @@ export default {
   overflow: hidden;
 }
 
-
+.game-preview .buttonPress {
+  float: right;
+  padding-right: 5px;
+}
 
 </style>

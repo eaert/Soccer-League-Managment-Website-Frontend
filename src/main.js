@@ -10,6 +10,9 @@ const router = new VueRouter({
   routes
 });
 
+import VueButtonAnimation from 'vue-button-animation'
+Vue.use(VueButtonAnimation);
+
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -64,13 +67,13 @@ axios.interceptors.response.use(
   }
 );
 
+axios.defaults.withCredentials=true;
 Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
 
 const shared_data = {
-  // username: localStorage.username,
-  username: "hilla",
+  username: localStorage.username,
   login(username) {
     localStorage.setItem("username", username);
     this.username = username;
@@ -80,7 +83,15 @@ const shared_data = {
     console.log("logout");
     localStorage.removeItem("username");
     this.username = undefined;
-  }
+  },
+  playername: localStorage.playername,
+  setPlayer(playername) {
+    localStorage.setItem("playername", playername);
+  },
+  teamname: localStorage.teamname,
+  setTeam(teamname) {
+    localStorage.setItem("teamname", teamname);
+  },
 };
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
