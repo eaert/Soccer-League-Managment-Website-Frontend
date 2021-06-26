@@ -92,6 +92,22 @@ const shared_data = {
   setTeam(teamname) {
     localStorage.setItem("teamname", teamname);
   },
+  query: localStorage.query,
+  setQuery(query) {
+    localStorage.setItem("query", query);
+  },
+  removeQuery() {
+    localStorage.removeItem("query");
+    this.query = undefined;
+  },
+  searchResults: localStorage.searchResults,
+  setResults(results) {
+    localStorage.setItem("searchResults", results);
+  },
+  removeResults() {
+    localStorage.removeItem("searchResults");
+    this.searchResults = undefined;
+  },
 };
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;

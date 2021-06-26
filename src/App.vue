@@ -35,6 +35,8 @@ export default {
           "http://localhost:3000/Logout"
         );
       this.$root.store.logout();
+      this.$root.store.removeQuery();
+      this.$root.store.removeResults();
       this.$root.toast("Logout", "User logged out successfully", "success");
 
       this.$router.push("/").catch(() => {

@@ -27,7 +27,7 @@ export default {
         required: true
       },
       founded: {
-        type: String,
+        type: Number,
         required: true
       },
       logo: {

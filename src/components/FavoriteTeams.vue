@@ -1,13 +1,13 @@
 <template>
   <div>
     <TeamPreview
-      v-for="g in Teams"
-      :id="g.id" 
-      :hostTeam="g.hostTeam" 
-      :guestTeam="g.guestTeam" 
-      :date="g.date" 
-      :hour="g.hour" 
-      :key="g.id"></TeamPreview>
+      v-for="t in teams"
+      :teamID="t.teamID" 
+      :teamname="t.teamname" 
+      :shortname="t.shortname" 
+      :founded="t.founded" 
+      :logo="t.logo" 
+      :key="t.teamID"></TeamPreview>
   </div>
 </template>
 
