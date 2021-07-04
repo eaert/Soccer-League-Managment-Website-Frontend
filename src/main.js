@@ -27,7 +27,8 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  TabsPlugin
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -40,7 +41,8 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  TabsPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -84,13 +86,25 @@ const shared_data = {
     localStorage.removeItem("username");
     this.username = undefined;
   },
+  isRep: localStorage.isRep,
+  setRep(isRep) {
+    localStorage.setItem("isRep", isRep);
+  },
   playername: localStorage.playername,
   setPlayer(playername) {
-    localStorage.setItem("playername", playername);
+    if (localStorage.playername) {
+      localStorage.playername = playername;
+    } else {
+      localStorage.setItem("playername", playername);
+    }
   },
   teamname: localStorage.teamname,
   setTeam(teamname) {
-    localStorage.setItem("teamname", teamname);
+    if (localStorage.teamname) {
+      localStorage.teamname = teamname;
+    } else {
+      localStorage.setItem("teamname", teamname);
+    }
   },
   query: localStorage.query,
   setQuery(query) {

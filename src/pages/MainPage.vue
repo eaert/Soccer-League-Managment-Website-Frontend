@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <LoginPage v-if="!$root.store.username"></LoginPage>
+    <LeagueInfo class="comp"></LeagueInfo>
+    <LoginPage v-if="!$root.store.username" class="comp"></LoginPage>
     <div class="details" v-else>
-      <FavoriteGames></FavoriteGames>
-      <FavoritePlayers></FavoritePlayers>
-      <LeagueInfo></LeagueInfo>
+      <FavoriteGames class="comp"></FavoriteGames>
+      <FavoritePlayers class="comp"></FavoritePlayers>
     </div>
   </div>
 </template>
@@ -26,6 +26,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  padding-top: 10px;
+}
+
+.container .comp {
+  padding-top: 50px;
+}
+
 .container .details {
   display: flex;
 }

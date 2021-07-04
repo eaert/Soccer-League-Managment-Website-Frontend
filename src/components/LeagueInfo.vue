@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style>
-.league-preview {
+/* .league-preview {
   display: inline-block;
   width: 350px;
   height: 550px;
@@ -72,6 +72,6 @@ export default {
   border-radius: 10px;
   border-width: 5px;
   border-color:rgb(44, 89, 116);
-}
+} */
 
 </style>

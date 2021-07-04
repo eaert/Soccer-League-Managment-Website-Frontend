@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand :to="{ name: 'main' }">Superliga Vue</b-navbar-brand>
+      <b-navbar-brand class="nav-link active" :to="{ name: 'main' }">Superliga Vue</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
 
-        <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
+        <b-nav-item class="nav-link active" :to="{ name: 'search' }">Search</b-nav-item>
+        <b-nav-item class="nav-link active" :to="{ name: 'league' }">League</b-nav-item>
+        <b-nav-item class="nav-link disable" v-bind:class="getClass()" :to="{ name: 'management' }">Management</b-nav-item>
+        <b-nav-item class="nav-link active" :to="{ name: 'about' }">About</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-if="!$root.store.username">
           <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
@@ -35,6 +38,7 @@ export default {
           "http://localhost:3000/Logout"
         );
       this.$root.store.logout();
+      this.$root.store.setRep(false);
       this.$root.store.removeQuery();
       this.$root.store.removeResults();
       this.$root.toast("Logout", "User logged out successfully", "success");
@@ -42,6 +46,17 @@ export default {
       this.$router.push("/").catch(() => {
         this.$forceUpdate();
       });
+    },
+    getClass() {
+      if (this.$root.store.isRep) {
+        return {
+          'nav-link active': "nav-link active"
+        }
+      } else {
+        return {
+          'nav-link disabled': "nav-link disabled"
+          };
+      }
     }
   }
 };
@@ -56,6 +71,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-height: 100vh;
+  background-image: url('https://media.tenor.com/images/4c8ac2554cec21fe79fdc76cb1de2155/tenor.gif');
+  background-repeat: no-repeat;
 }
 
 #nav {
@@ -70,4 +87,5 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>

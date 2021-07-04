@@ -49,8 +49,12 @@ export default {
   }, 
   methods: {
     TeamPage(team) {
-      this.$root.store.setTeam(team);
-      this.$router.push("/team");
+      try {
+        this.$emit.getTeamDetails(team);
+      } catch (error) {
+        this.$root.store.setTeam(team);
+        this.$router.push("/team");
+      }
     },
     async Like(targetID) {
       try {

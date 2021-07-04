@@ -1,34 +1,74 @@
 <template>
   <div>
+    <h1>League Teams:</h1>
+    <div class="teams">
       <TeamPreview
         v-for="t in teams"
-        :teamID="t.teamID" 
-        :teamname="t.teamname" 
-        :shortname="t.shortname" 
+        :teamID="t.id" 
+        :teamname="t.name" 
+        :shortname="t.short_code" 
         :founded="t.founded" 
-        :logo="t.logo" 
-        :key="t.teamID"></TeamPreview>
+        :logo="t.logo_path" 
+        :key="t.id"></TeamPreview>
+    </div>
+    <div>
+      <b-tabs content-class="mt-3">
+          <b-tab title="Currently Games">
+            <GamePreview
+                v-for="g in currGames"
+                :id="g.gameID" 
+                :homeTeam="g.homeTeam" 
+                :awayTeam="g.awayTeam" 
+                :date="g.date" 
+                :hours="g.hours" 
+                :field="g.field"
+                :key="g.id">
+            </GamePreview>
+          </b-tab>
+          <b-tab title="Previues Games">
+            <PrevGame
+                v-for="g in prevGames"
+                :game="g.game" 
+                :gameLog="g.log" 
+                :key="g.game.gameID">
+            </PrevGame>
+          </b-tab>
+      </b-tabs>
+    </div>
   </div>
 </template>
 
 <script>
 import TeamPreview from "../components/TeamPreview.vue";
+import GamePreview from "../components/GamePreview.vue";
+import PrevGame from "../components/PrevGame.vue";
 
 export default {
     name: "LeaguePage",
     components: {
         TeamPreview,
+        GamePreview,
+        PrevGame
     },
     data() {
         return {
-            teams: []
+            teams: [],
+            prevGames: [],
+            currGames: []
         }
     },
     methods: {
-        getLeagueData() {
-            // axios request
-
-            // save data to comp data
+        async getLeagueData() {
+            try{
+                const response = await this.axios.get(
+                    "http://localhost:3000/leagues/getFullDetails",
+                );
+                this.teams = response.data.teams;
+                this.prevGames = response.data.prev_games;
+                this.currGames = response.data.next_games;
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     mounted() {
@@ -40,5 +80,8 @@ export default {
 </script>
 
 <style>
-
+.teams {
+    display: flex;
+    flex-wrap: wrap;
+}
 </style>

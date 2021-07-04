@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <h1 class="title">Login</h1>
     <b-form @submit.prevent="onLogin">
+      <h1 class="title">Login</h1>
       <b-form-group
         id="input-group-Username"
         label-cols-sm="3"
@@ -104,6 +104,10 @@ export default {
         // this.$root.loggedIn = true;
         console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
+        const isRep = await this.axios.get(
+          "http://localhost:3000/users/Representative/isRep"
+        );
+        this.$root.store.setRep(isRep.data);
         this.$router.push("/");
       } catch (err) {
         console.log(err.response);

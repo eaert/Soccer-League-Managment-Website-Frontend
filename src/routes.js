@@ -28,6 +28,21 @@ const routes = [
     component: () => import("./pages/TeamPage")
   },
   {
+    path: "/league",
+    name: "league",
+    component: () => import("./pages/LeaguePage")
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import("./pages/AboutPage")
+  },
+  {
+    path: "/management",
+    name: "management",
+    component: () => import("./pages/ManagementPage")
+  },
+  {
     path: "*",
     name: "notFound",
     component: NotFound
