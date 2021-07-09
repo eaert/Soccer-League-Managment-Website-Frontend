@@ -16,12 +16,13 @@ import FavoriteGames from "../components/FavoriteGames";
 import FavoritePlayers from "../components/FavoritePlayers.vue";
 import LoginPage from "../pages/LoginPage";
 export default {
+  name: "MainPage",
   components: {
     LeagueInfo, 
     LoginPage, 
     FavoriteGames,
     FavoritePlayers,
-  }
+  },
 };
 </script>
 
@@ -36,6 +37,11 @@ export default {
 }
 
 .container .details {
+  display: flex;
+  padding-left: 25px;
+}
+
+.details .comp {
   display: flex;
 }
 </style>

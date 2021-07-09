@@ -1,23 +1,46 @@
 <template>
     <div>
+      <div v-if="this.loading">
       <h1>Team Page</h1>
-      <TeamPreview
-        :logo="team.logo"
-        :teamID="team.teamID"
-        :teamname="team.teamname"
-        :shortname="team.shortname"
-        :founded="team.founded">
-      </TeamPreview>
-      <GamePreview
-        v-for="g in games"
-        :id="g.gameID" 
-        :homeTeam="g.homeTeam" 
-        :awayTeam="g.awayTeam" 
-        :date="g.date" 
-        :hours="g.hours" 
-        :field="g.field"
-        :key="g.id">
-      </GamePreview>
+      <div class="TeamDetails">
+      <b-card
+        :title="team.teamname"
+        :img-src="team.logo"
+        img-alt="Image"
+        img-height="150px"
+        img-width="100px"
+        img-left>
+        <b-list-group>
+          <b-list-group-item>Team ID: {{ team.teamID }}</b-list-group-item>
+          <b-list-group-item>Short Name: {{ team.shortname }}</b-list-group-item>
+          <b-list-group-item>Founded: {{ team.founded }}</b-list-group-item>
+        </b-list-group>
+      </b-card>
+      </div>
+      <div>
+      <b-tabs content-class="mt-3">
+          <b-tab title="Currently Games" style="display: flex; flex-wrap: wrap;">
+            <GamePreview
+                v-for="cg in currGames"
+                :id="cg.gameID" 
+                :homeTeam="cg.homeTeam" 
+                :awayTeam="cg.awayTeam" 
+                :date="cg.date" 
+                :hours="cg.hours" 
+                :field="cg.field"
+                :key="cg.gameID">
+            </GamePreview>
+          </b-tab>
+          <b-tab title="Previues Games" style="display: flex; flex-wrap: wrap;">
+            <PrevGame
+                v-for="pg in prevGames"
+                :game="pg.game" 
+                :gameLog="pg.log" 
+                :key="pg.gameID">
+            </PrevGame>
+          </b-tab>
+      </b-tabs>
+    </div>
       <PlayerPreview
         v-for="p in players"
         :id="p.playerID" 
@@ -36,6 +59,10 @@
         :nation="coach.nationality"
         :birthday="coach.birthday">
       </CoachInfo>
+      </div>
+      <div v-else>
+        <p> Loading... </p>
+      </div>
   </div>
 </template>
 
@@ -43,21 +70,24 @@
 import PlayerPreview from "./PlayerPreview.vue";
 import GamePreview from "./GamePreview.vue";
 import CoachInfo from "./CoachInfo.vue";
-import TeamPreview from "./TeamPreview.vue";
+import PrevGame from "./PrevGame.vue";
+
 export default {
   name: "teamInfo",
   components: {
     GamePreview,
     PlayerPreview,
     CoachInfo,
-    TeamPreview
+    PrevGame
   },
  data() {
     return {
       team: this.team,
-      games: this.games,
+      currGames: this.currGames,
+      prevGames: this.prevGames,
       players: this.players,
-      coach: this.coach
+      coach: this.coach,
+      loading: false
     };
   }, 
   methods: {
@@ -69,12 +99,15 @@ export default {
         );
         const teamData = response.data;
         this.team = teamData.team;
-        this.games = [];
-        this.games.push(...teamData.games);
+        this.currGames = [];
+        this.currGames.push(...teamData.games.next);
+        this.prevGames = [];
+        this.prevGames.push(...teamData.games.prev);
         this.players = [];
         this.players.push(...teamData.players);
         this.coach = teamData.coach;
         console.log(response);
+        this.loading = true;
       } catch (error) {
         console.log("error in update games")
         console.log(error);
@@ -83,10 +116,24 @@ export default {
   }, 
   mounted(){
     console.log("favorite games mounted");
-    this.getTeamDetails(this.$root.store.teamname); 
+    this.loading = false;
+    this.getTeamDetails(this.$route.params.teamName); 
   }
 };
 </script>
 
 <style>
+.TeamDetails {
+  height: 750px;
+  width: 550px;
+  margin-left: 10px;
+  font-family: cursive;
+  font-weight: bold;
+}
+
+.TeamDetails img {
+  height: 100%;
+  width: 225px;
+  margin-top: 15px;
+}
 </style>

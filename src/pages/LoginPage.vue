@@ -107,7 +107,20 @@ export default {
         const isRep = await this.axios.get(
           "http://localhost:3000/users/Representative/isRep"
         );
-        this.$root.store.setRep(isRep.data);
+        let component = null;
+        let parent = this.$parent;
+        while (parent && !component) {
+          if (parent.$options.name === 'App') {
+            component = parent
+          }
+          parent = parent.$parent
+        }
+        component.isRep = isRep.data;
+        const favoItems = await this.axios.get(
+          `http://localhost:3000/users/AllUserFavo/${this.form.username}`
+        );
+        this.$root.store.setFavoItems(JSON.stringify(favoItems.data), false);
+        this.$forceUpdate();
         this.$router.push("/");
       } catch (err) {
         console.log(err.response);

@@ -28,7 +28,10 @@ import {
   ToastPlugin,
   LayoutPlugin, 
   InputGroupPlugin,
-  TabsPlugin
+  TabsPlugin,
+  ListGroupPlugin,
+  FormDatepickerPlugin,
+  FormTimepickerPlugin
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -42,7 +45,10 @@ import {
   ToastPlugin,
   LayoutPlugin, 
   InputGroupPlugin,
-  TabsPlugin
+  TabsPlugin,
+  ListGroupPlugin,
+  FormDatepickerPlugin,
+  FormTimepickerPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 
@@ -86,29 +92,13 @@ const shared_data = {
     localStorage.removeItem("username");
     this.username = undefined;
   },
-  isRep: localStorage.isRep,
-  setRep(isRep) {
-    localStorage.setItem("isRep", isRep);
-  },
-  playername: localStorage.playername,
-  setPlayer(playername) {
-    if (localStorage.playername) {
-      localStorage.playername = playername;
-    } else {
-      localStorage.setItem("playername", playername);
-    }
-  },
-  teamname: localStorage.teamname,
-  setTeam(teamname) {
-    if (localStorage.teamname) {
-      localStorage.teamname = teamname;
-    } else {
-      localStorage.setItem("teamname", teamname);
-    }
-  },
   query: localStorage.query,
   setQuery(query) {
-    localStorage.setItem("query", query);
+    if (localStorage.query) {
+      localStorage.query = query;
+    } else {
+      localStorage.setItem("query", query);
+    }
   },
   removeQuery() {
     localStorage.removeItem("query");
@@ -116,12 +106,55 @@ const shared_data = {
   },
   searchResults: localStorage.searchResults,
   setResults(results) {
-    localStorage.setItem("searchResults", results);
+    if (localStorage.searchResults) {
+      localStorage.searchResults = results;
+    } else {
+      localStorage.setItem("searchResults", results);
+    }
   },
   removeResults() {
     localStorage.removeItem("searchResults");
     this.searchResults = undefined;
   },
+  favoItems: localStorage.favoItems,
+  setFavoItems(array, single) {
+    if (localStorage.favoItems) {
+      if (single) {
+        let items = JSON.parse(localStorage.favoItems);
+        items.push(array[0]);
+        localStorage.favoItems = JSON.stringify(items);
+      }
+    } else {
+      localStorage.favoItems = array;
+    }
+  },
+  removeFavoItems() {
+    localStorage.removeItem("favoItems");
+    this.favoItems = undefined;
+  },
+  isFavo(id, type) {
+    try {
+      let items = JSON.parse(localStorage.favoItems);
+      let result = false;
+      items.forEach(item => {
+        if (item.targetID == id && item.type === type) {
+          result = true;
+        }
+      });
+      return result;
+    } catch (error) {
+      return true;
+    }
+  },
+  removeSingleFavo(id, type) {
+    let items = JSON.parse(localStorage.favoItems);
+      let result = false;
+      for (let index = 0; index < items.length; index++) {
+        if (item.targetID == id && item.type === type)
+          items.splice(index, 1);
+          localStorage.favoItems = JSON.stringify(items);
+      }
+  }
 };
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;

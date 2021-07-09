@@ -3,7 +3,7 @@
       <b-card
       img-alt="Image"
       tag="article"
-      style="max-width: 20rem;"
+      style="max-width: 20rem; background-color: transparent; border: none;"
       class="mb-2"
     >
       <b-card-title>{{ league.league_name }}</b-card-title>
@@ -12,16 +12,23 @@
         <br/>
         Stage: {{ league.current_stage_name[0].roundNum }}
       </b-card-text>
-      <GamePreview
-        :id="league.next_game.gameID" 
-        :homeTeam="league.next_game.homeTeam" 
-        :awayTeam="league.next_game.awayTeam" 
-        :date="league.next_game.date" 
-        :hours="league.next_game.hours" 
-        :field="league.next_game.field"
-        :key="league.next_game.id">
-      </GamePreview>
-      <b-button href="#" variant="primary">Go somewhere</b-button>
+      <b-button size="sm" @click="toggle">
+        {{ show ? 'Hide' : 'Show' }} Next Game
+      </b-button>
+      <b-alert
+        v-model="show"
+        style="background-color: transparent; border: none;"
+      >
+        <GamePreview
+          :id="league.next_game.gameID" 
+          :homeTeam="league.next_game.homeTeam" 
+          :awayTeam="league.next_game.awayTeam" 
+          :date="league.next_game.date" 
+          :hours="league.next_game.hours" 
+          :field="league.next_game.field"
+          :key="league.next_game.gameID">
+        </GamePreview>
+      </b-alert>
     </b-card>
   </div>
 </template>
@@ -35,7 +42,13 @@ export default {
   },
  data() {
     return {
-      league: this.league
+      league: {
+        league_name: '',
+        current_season_name: '',
+        current_stage_name: [0],
+        next_game: {}
+      },
+      show: false
     };
   }, 
   methods: {
@@ -52,6 +65,10 @@ export default {
         console.log("error in update league")
         console.log(error);
       }
+    },
+    toggle() {
+        console.log('Toggle button clicked')
+        this.show = !this.show
     }
   }, 
   mounted(){
@@ -73,5 +90,10 @@ export default {
   border-width: 5px;
   border-color:rgb(44, 89, 116);
 } */
+
+b-alert{
+  background-color: transparent;
+  border: none;
+}
 
 </style>

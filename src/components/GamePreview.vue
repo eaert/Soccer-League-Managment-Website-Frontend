@@ -1,5 +1,24 @@
 <template>
-  <div class="game-preview">
+  <div class="gamePrev">
+      <b-card
+        title="Game Details"
+        img-src="https://previews.123rf.com/images/praewpailin/praewpailin1606/praewpailin160600023/60968143-football-field-or-soccer-field-pattern-and-texture-abstract-soccer-field-or-football-field-backgroun.jpg"
+        img-alt="Image"
+        img-height="150px"
+        img-width="100px"
+        img-top>
+        <b-list-group>
+          <b-list-group-item>Game ID: {{ id }}</b-list-group-item>
+          <b-list-group-item class="GoTo" v-on:click="TeamPage(homeTeam)">Home Team: {{ homeTeam }}</b-list-group-item>
+          <b-list-group-item class="GoTo" v-on:click="TeamPage(awayTeam)">Away Team: {{ awayTeam }}</b-list-group-item>
+          <b-list-group-item>Date: {{ date }}</b-list-group-item>
+          <b-list-group-item>Start Hour: {{ hours }}</b-list-group-item>
+          <b-list-group-item>Stadium: {{ field }}</b-list-group-item>
+        </b-list-group>
+        <Like :id="id" :type="'game'"></Like>
+      </b-card>
+    </div>
+  <!-- <div class="game-preview">
     <div :title="id" class="game-title">
       <b>Game Id:</b> {{ id }}
     </div>
@@ -15,12 +34,18 @@
     <div class="buttonPress">
       <button-press v-on:click="Like(id)" color="cyan" size="l">Like</button-press>
     </div>
-  </div>
+  </div> -->
+  <!-- https://previews.123rf.com/images/praewpailin/praewpailin1606/praewpailin160600023/60968143-football-field-or-soccer-field-pattern-and-texture-abstract-soccer-field-or-football-field-backgroun.jpg -->
 </template>
 
 <script>
+import Like from './Like.vue';
+
 export default {
   name: "GamePreview",
+  components: {
+    Like
+  },
   props: {
       id: {
         type: Number,
@@ -49,25 +74,10 @@ export default {
   }, 
   methods: {
     TeamPage(team) {
-      try {
+      if (this.$parent.name === "TeamPage") {
         this.$emit.getTeamDetails(team);
-      } catch (error) {
-        this.$root.store.setTeam(team);
-        this.$router.push("/team");
-      }
-    },
-    async Like(targetID) {
-      try {
-        const response = await this.axios.post(
-          "http://localhost:3000/users/favoriteGames",
-          {
-            game_id: targetID,
-            type: 'game'
-          },
-          {withCredentials: true}
-        );
-      } catch(error) {
-        window.alert('Game Already been Liked')
+      } else {
+        this.$router.push({name: "team", params: {teamName: team}});
       }
     }
   },
@@ -78,32 +88,27 @@ export default {
 </script>
 
 <style>
-.game-preview {
-  display: inline-block;
-  width: 250px;
-  height: 300px;
-  position: relative;
-  margin: 10px 10px;
-  border-style: solid;
-  border-radius: 10px;
-  border-width: 5px;
-  border-color:cadetblue;
+
+.gamePrev {
+  height: 700px;
+  width: 300px;
+  font-family: cursive;
+  font-weight: bold;
 }
 
-.game-preview .game-title {
-  text-align: center;
-  text-transform: uppercase;
-  color:  rgb(111, 197, 157);
-}
-
-.game-preview .game-content {
+.gamePrev img {
+  height: 200px;
   width: 100%;
-  overflow: hidden;
 }
 
-.game-preview .buttonPress {
+.buttonPress {
   float: right;
   padding-right: 5px;
+}
+
+.GoTo:hover {
+  background-color: lightgray;
+  cursor: pointer;
 }
 
 </style>

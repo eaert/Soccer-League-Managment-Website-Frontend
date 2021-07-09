@@ -14,24 +14,28 @@
     <div>
       <b-tabs content-class="mt-3">
           <b-tab title="Currently Games">
-            <GamePreview
-                v-for="g in currGames"
-                :id="g.gameID" 
-                :homeTeam="g.homeTeam" 
-                :awayTeam="g.awayTeam" 
-                :date="g.date" 
-                :hours="g.hours" 
-                :field="g.field"
-                :key="g.id">
-            </GamePreview>
+            <div style="display: flex;">
+                <GamePreview
+                    v-for="g in currGames"
+                    :id="g.gameID" 
+                    :homeTeam="g.homeTeam" 
+                    :awayTeam="g.awayTeam" 
+                    :date="g.date" 
+                    :hours="g.hours" 
+                    :field="g.field"
+                    :key="g.gameID">
+                </GamePreview>
+            </div>
           </b-tab>
           <b-tab title="Previues Games">
-            <PrevGame
-                v-for="g in prevGames"
-                :game="g.game" 
-                :gameLog="g.log" 
-                :key="g.game.gameID">
-            </PrevGame>
+            <div style="display: flex;">
+                <PrevGame
+                    v-for="g in prevGames"
+                    :game="g.game" 
+                    :gameLog="g.log" 
+                    :key="g.game.gameID">
+                </PrevGame>
+            </div>
           </b-tab>
       </b-tabs>
     </div>
@@ -54,7 +58,8 @@ export default {
         return {
             teams: [],
             prevGames: [],
-            currGames: []
+            currGames: [],
+            isLoading: true
         }
     },
     methods: {
@@ -66,6 +71,7 @@ export default {
                 this.teams = response.data.teams;
                 this.prevGames = response.data.prev_games;
                 this.currGames = response.data.next_games;
+                this.isLoading = false;
             } catch (error) {
                 console.log(error);
             }
@@ -73,6 +79,7 @@ export default {
     },
     mounted() {
         console.log("LeaguePage mounted");
+        this.isLoading = true;
         this.getLeagueData();
     }
 

@@ -7,7 +7,7 @@
 
         <b-nav-item class="nav-link active" :to="{ name: 'search' }">Search</b-nav-item>
         <b-nav-item class="nav-link active" :to="{ name: 'league' }">League</b-nav-item>
-        <b-nav-item class="nav-link disable" v-bind:class="getClass()" :to="{ name: 'management' }">Management</b-nav-item>
+        <b-nav-item v-bind:class="getClass()" :to="{ name: 'management' }">Management</b-nav-item>
         <b-nav-item class="nav-link active" :to="{ name: 'about' }">About</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-if="!$root.store.username">
@@ -17,7 +17,7 @@
         <b-navbar-nav class="ml-auto" v-else>
         <b-nav-item-dropdown right>
           <template #button-content>
-            User
+            {{ $root.store.username }}
           </template>
           <b-dropdown-item href="#">Favorites</b-dropdown-item>
           <b-dropdown-item href="#" @click="Logout">Log Out</b-dropdown-item>
@@ -32,15 +32,21 @@
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      isRep: false
+    }
+  },
   methods: {
     async Logout() {
         const response = await this.axios.post(
           "http://localhost:3000/Logout"
         );
       this.$root.store.logout();
-      this.$root.store.setRep(false);
+      this.isRep = false;
       this.$root.store.removeQuery();
       this.$root.store.removeResults();
+      this.$root.store.removeFavoItems();
       this.$root.toast("Logout", "User logged out successfully", "success");
 
       this.$router.push("/").catch(() => {
@@ -48,7 +54,7 @@ export default {
       });
     },
     getClass() {
-      if (this.$root.store.isRep) {
+      if (this.isRep) {
         return {
           'nav-link active': "nav-link active"
         }

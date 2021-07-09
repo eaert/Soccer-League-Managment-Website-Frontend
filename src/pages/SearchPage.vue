@@ -16,8 +16,8 @@
       <b-input-group-append>
         <b-button type="submit" variant="success">Search</b-button>
       </b-input-group-append>
-    Your search Query: {{ searchQuery }}
     </b-form>
+    <p style="margin-left: 20px">Your search Query: {{ this.form.searchQuery }}</p>
     <Search
       :players="results.players"
       :teams="results.teams"
@@ -38,6 +38,9 @@ export default {
       form: {
         searchQuery: "",
         searchType: ""
+      },
+      filter: {
+
       },
       results: {
         players: [],
@@ -66,11 +69,11 @@ export default {
           );
         }
         this.results = response.data;
-        this.$root.store.setQuery({
+        this.$root.store.setQuery(JSON.stringify({
           searchQuery: this.form.searchQuery,
           searchType: this.form.searchType
-        });
-        this.$root.store.setResults(response.data);
+        }));
+        this.$root.store.setResults(JSON.stringify(response.data));
         console.log(response);
       } catch (err) {
         console.log(err);
@@ -82,9 +85,10 @@ export default {
     }
   },
   mounted(){
-    if(this.$root.store.searchResults && this.$root.store.query.searchQuery) {
-      this.results = this.$root.store.searchResults;
-      this.searchQuery = this.$root.store.query.searchQuery;
+    if(JSON.parse(this.$root.store.searchResults) && JSON.parse(this.$root.store.query).searchQuery) {
+      this.results = JSON.parse(this.$root.store.searchResults);
+      this.form.searchQuery = JSON.parse(this.$root.store.query).searchQuery;
+      this.$forceUpdate();
     }
   } 
 }
