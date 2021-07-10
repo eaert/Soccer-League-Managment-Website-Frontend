@@ -26,14 +26,26 @@ export default {
     methods: {
         async Like() {
             try {
-                const response = await this.axios.post(
-                "http://localhost:3000/users/favoritePlayers",
-                {
-                    player_id: this.id,
-                    type: this.type
-                },
-                    {withCredentials: true}
-                );
+                if (this.type === "player") {
+                    const response = await this.axios.post(
+                        "http://localhost:3000/users/favoritePlayers",
+                    {
+                        player_id: this.id,
+                        type: this.type
+                    },
+                        {withCredentials: true}
+                    );
+                } else {
+                    const response = await this.axios.post(
+                        "http://localhost:3000/users/favoriteGames",
+                    {
+                        game_id: this.id,
+                        type: this.type
+                    },
+                        {withCredentials: true}
+                    );
+                }
+                
                 this.isFavorite = true;
                 this.$root.store.setFavoItems([{targetID: this.id, type: this.type}], true);
 

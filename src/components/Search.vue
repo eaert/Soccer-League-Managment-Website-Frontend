@@ -5,8 +5,9 @@
         <b-form-select
           id="team-select"
           v-model="filter.team"
-          :options="[{ value: null, text: 'Choose Position to ', disabled: true}, 'All','1', '2', '3', '4']"
-          style="width: 100px">
+          :options="this.teamsNames"
+          style="width: 100px"
+          required>
         </b-form-select>
       </b-input-group>
       <b-input-group prepend="Position" id="position-group">
@@ -70,7 +71,7 @@ export default {
       filter: {
 
       },
-      teamsNames: []
+      teamsNames: [{ value: null, text: 'Choose Team to Filter By', disabled: true}, "All"]
     }
   },
   props: {
@@ -138,10 +139,21 @@ export default {
     },
     onFilter() {
       this.FilterData();
+    },
+    async setTeams() {
+      const response = await this.axios.get(
+        "http://localhost:3000/leagues/getAllLeagueTeams"
+      );
+      let teamNamesData = [];
+      (response.data).forEach(team => {
+        teamNamesData.push(team.teamName);
+      });
+      this.teamsNames.push(...teamNamesData);
     }
   },
   mounted(){
     console.log("search mounted")
+    this.setTeams();
   } 
 }
 </script>

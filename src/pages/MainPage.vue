@@ -4,7 +4,7 @@
     <LeagueInfo class="comp"></LeagueInfo>
     <LoginPage v-if="!$root.store.username" class="comp"></LoginPage>
     <div class="details" v-else>
-      <FavoriteGames class="comp"></FavoriteGames>
+      <FavoriteGames class="comp" :num="2"></FavoriteGames>
       <FavoritePlayers class="comp"></FavoritePlayers>
     </div>
   </div>

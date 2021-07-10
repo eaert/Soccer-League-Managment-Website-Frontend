@@ -74,6 +74,9 @@ export default {
           searchType: this.form.searchType
         }));
         this.$root.store.setResults(JSON.stringify(response.data));
+        if (this.results.players.length == 0 && this.results.teams.length == 0) {
+          this.$root.toast("Results", "There weren't any Results", "danger");
+        }
         console.log(response);
       } catch (err) {
         console.log(err);

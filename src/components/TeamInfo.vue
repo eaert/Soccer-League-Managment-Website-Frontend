@@ -19,28 +19,33 @@
       </div>
       <div>
       <b-tabs content-class="mt-3">
-          <b-tab title="Currently Games" style="display: flex; flex-wrap: wrap;">
-            <GamePreview
-                v-for="cg in currGames"
-                :id="cg.gameID" 
-                :homeTeam="cg.homeTeam" 
-                :awayTeam="cg.awayTeam" 
-                :date="cg.date" 
-                :hours="cg.hours" 
-                :field="cg.field"
-                :key="cg.gameID">
-            </GamePreview>
+          <b-tab title="Currently Games">
+            <div class="rowDisplay">
+              <GamePreview
+                  v-for="cg in currGames"
+                  :id="cg.gameID" 
+                  :homeTeam="cg.homeTeam" 
+                  :awayTeam="cg.awayTeam" 
+                  :date="cg.date" 
+                  :hours="cg.hours" 
+                  :field="cg.field"
+                  :key="cg.gameID">
+              </GamePreview>
+            </div>
           </b-tab>
-          <b-tab title="Previues Games" style="display: flex; flex-wrap: wrap;">
-            <PrevGame
-                v-for="pg in prevGames"
-                :game="pg.game" 
-                :gameLog="pg.log" 
-                :key="pg.gameID">
-            </PrevGame>
+          <b-tab title="Previues Games">
+            <div class="rowDisplay">
+              <PrevGame
+                  v-for="pg in prevGames"
+                  :game="pg.game" 
+                  :gameLog="pg.log" 
+                  :key="pg.gameID">
+              </PrevGame>
+            </div>
           </b-tab>
       </b-tabs>
     </div>
+    <div class="rowDisplay">
       <PlayerPreview
         v-for="p in players"
         :id="p.playerID" 
@@ -59,6 +64,7 @@
         :nation="coach.nationality"
         :birthday="coach.birthday">
       </CoachInfo>
+    </div>
       </div>
       <div v-else>
         <p> Loading... </p>
@@ -124,7 +130,7 @@ export default {
 
 <style>
 .TeamDetails {
-  height: 750px;
+  height: 300px;
   width: 550px;
   margin-left: 10px;
   font-family: cursive;
@@ -135,5 +141,10 @@ export default {
   height: 100%;
   width: 225px;
   margin-top: 15px;
+}
+
+.rowDisplay {
+  display: flex; 
+  flex-wrap: wrap;
 }
 </style>

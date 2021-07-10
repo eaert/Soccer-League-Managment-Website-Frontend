@@ -48,6 +48,16 @@ const routes = [
     component: () => import("./pages/ManagementPage")
   },
   {
+    path: "/favorites",
+    name: "managefavoritesent",
+    component: () => import("./pages/FavoritesPage")
+  },
+  {
+    path: "/switch",
+    name: "switch",
+    component: () => import("./pages/emptyPage")
+  },
+  {
     path: "*",
     name: "notFound",
     component: NotFound

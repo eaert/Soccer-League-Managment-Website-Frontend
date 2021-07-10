@@ -150,7 +150,7 @@ const shared_data = {
     let items = JSON.parse(localStorage.favoItems);
       let result = false;
       for (let index = 0; index < items.length; index++) {
-        if (item.targetID == id && item.type === type)
+        if (items[index].targetID == id && items[index].type === type)
           items.splice(index, 1);
           localStorage.favoItems = JSON.stringify(items);
       }

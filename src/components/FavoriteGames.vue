@@ -24,6 +24,12 @@ export default {
       games: this.games
     };
   },
+  props: {
+    num: {
+      type: Number,
+      require: true
+    }
+  },
   methods: {
     async updateGames(){
       console.log("response");
@@ -34,8 +40,13 @@ export default {
         );
         const games = response.data;
         this.games = [];
+        let index = 0;
         games.forEach(game => {
+          if (index > this.num) {
+            return;
+          }
           this.games.push(game[0])
+          index++;
         });
         console.log(this.games);
         console.log(response);

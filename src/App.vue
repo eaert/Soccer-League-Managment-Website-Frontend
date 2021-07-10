@@ -19,7 +19,7 @@
           <template #button-content>
             {{ $root.store.username }}
           </template>
-          <b-dropdown-item href="#">Favorites</b-dropdown-item>
+          <b-dropdown-item href="#" @click="Favorites()">Favorites</b-dropdown-item>
           <b-dropdown-item href="#" @click="Logout">Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -53,6 +53,9 @@ export default {
         this.$forceUpdate();
       });
     },
+    Favorites() {
+      this.$router.push("favorites");
+    },
     getClass() {
       if (this.isRep) {
         return {
@@ -77,8 +80,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-height: 100vh;
-  background-image: url('https://media.tenor.com/images/4c8ac2554cec21fe79fdc76cb1de2155/tenor.gif');
-  background-repeat: no-repeat;
 }
 
 #nav {

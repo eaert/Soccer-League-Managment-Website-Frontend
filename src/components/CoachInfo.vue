@@ -55,7 +55,8 @@ export default {
   border-style: solid;
   border-radius: 10px;
   border-width: 5px;
-  border-color:cadetblue;
+  border-color:gray;
+  background-color: #ffffff90;
 }
 
 .coach-preview .coach-title {
