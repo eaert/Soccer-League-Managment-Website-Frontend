@@ -81,11 +81,17 @@ export default {
   },
   methods: {
     TeamPage(team) {
-      if (this.$parent.name === "TeamPage") {
-        this.$emit.getTeamDetails(team);
-      } else {
-        this.$router.push({name: "team", params: {teamName: team}});
-      }
+      this.$router.push({name: "team", params: {teamName: team}}).catch(() => {
+        let component = null;
+        let parent = this.$parent;
+        while (parent && !component) {
+          if (parent.$options._componentTag === 'TeamInfo') {
+            component = parent
+          }
+          parent = parent.$parent
+        }
+        component.updateTeam(team);
+      });
     },
     PlayerPage(player) {
       this.$router.push({name: "player", params: {playerID: player}});

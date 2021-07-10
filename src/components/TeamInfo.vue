@@ -67,7 +67,8 @@
     </div>
       </div>
       <div v-else>
-        <p> Loading... </p>
+        <img src="https://media.tenor.com/images/4c8ac2554cec21fe79fdc76cb1de2155/tenor.gif" />
+        <p id="loading">Loading...</p>
       </div>
   </div>
 </template>
@@ -118,6 +119,11 @@ export default {
         console.log("error in update games")
         console.log(error);
       }
+    },
+    async updateTeam(team) {
+      this.loading = false;
+      await this.getTeamDetails(team);
+      this.$forceUpdate();
     }
   }, 
   mounted(){
@@ -147,4 +153,10 @@ export default {
   display: flex; 
   flex-wrap: wrap;
 }
+
+#loading {
+  font-size: 60px;
+  margin-left: 150px;
+}
+
 </style>

@@ -31,7 +31,8 @@ import {
   TabsPlugin,
   ListGroupPlugin,
   FormDatepickerPlugin,
-  FormTimepickerPlugin
+  FormTimepickerPlugin,
+  SpinnerPlugin
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -48,7 +49,8 @@ import {
   TabsPlugin,
   ListGroupPlugin,
   FormDatepickerPlugin,
-  FormTimepickerPlugin
+  FormTimepickerPlugin,
+  SpinnerPlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
 

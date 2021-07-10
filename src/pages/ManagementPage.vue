@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="display: flex;">
+    <div id="CreateGame" class="bonus">
       <h1>Create Game</h1>
       <b-form @submit.prevent="onCreate">
       <b-form-group
@@ -22,7 +23,7 @@
       <b-form-group
         id="input-group-awayTeam"
         label-cols-sm="3"
-        label="awayTeam:"
+        label="Away Team:"
         label-for="awayTeam"
       >
         <b-form-select
@@ -76,7 +77,72 @@
         class="ml-5 w-75"
         >Create</b-button
       >
-    </b-form>
+      </b-form>
+    </div>
+    <div id="updateScore" class="bonus">
+      <h1>Update Game Score</h1>
+      <b-form @submit.prevent="onUpdateScore">
+
+      <b-form-group
+        id="input-group-GameID"
+        label-cols-sm="3"
+        label="Game ID to Update:"
+        label-for="GameID"
+      >
+        <b-form-input
+          id="GameID"
+          type="input"
+          v-model="$v.form1.GameID.$model"
+          :state="validateState1('GameID')"
+        ></b-form-input>
+        <b-form-invalid-feedback>
+          Game ID is required must be numeric above 0
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-homeTeamGoals"
+        label-cols-sm="3"
+        label="new Home Team Goals:"
+        label-for="homeTeamGoals"
+      >
+        <b-form-input
+          id="homeTeamGoals"
+          type="input"
+          v-model="$v.form1.homeTeamGoals.$model"
+          :state="validateState1('homeTeamGoals')"
+        ></b-form-input>
+        <b-form-invalid-feedback>
+          Home Team Goals is required and must be a positive number.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-awayTeamGoals"
+        label-cols-sm="3"
+        label="new Away Team Goals:"
+        label-for="awayTeamGoals"
+      >
+        <b-form-input
+          id="awayTeamGoals"
+          type="input"
+          v-model="$v.form1.awayTeamGoals.$model"
+          :state="validateState1('awayTeamGoals')"
+        ></b-form-input>
+        <b-form-invalid-feedback>
+          Away Team Goals is required and must be a positive number.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-button
+        type="submit"
+        variant="primary"
+        style="width:250px;"
+        class="ml-5 w-75"
+        >Update</b-button
+      >
+      </b-form>
+    </div>
   </div>
 </template>
 
@@ -88,7 +154,7 @@ import {
   alpha,
   sameAs,
   email,
-  url
+  url,
 } from "vuelidate/lib/validators";
 
 export default {
@@ -100,6 +166,12 @@ export default {
         awayTeam: null,
         datepicker: "",
         timepicker: "",
+        submitError: undefined
+      },
+      form1: {
+        GameID: null,
+        homeTeamGoals: null,
+        awayTeamGoals: null,
         submitError: undefined
       },
       teams: [{ value: null, text: "", disabled: true }],
@@ -128,6 +200,26 @@ export default {
       timepicker: {
         required
       }
+    },
+    form1: {
+      GameID: {
+        required,
+        minValue(val) {
+          return val > 0;
+        }
+      },
+      homeTeamGoals: {
+        required,
+        minValue(val) {
+          return val > 0;
+        }
+      },
+      awayTeamGoals: {
+        required,
+        minValue(val) {
+          return val > 0;
+        }
+      }
     }
   },
   mounted() {
@@ -136,6 +228,10 @@ export default {
   methods: {
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
+      return $dirty ? !$error : null;
+    },
+    validateState1(param) {
+      const { $dirty, $error } = this.$v.form1[param];
       return $dirty ? !$error : null;
     },
     async CreateGame() {
@@ -149,8 +245,8 @@ export default {
             awayTeam: this.form.awayTeam,
             homeTeamGoals: 0,
             awayTeamGoals: 0,
-            field: this.form.venues[this.teams.indexof(this.form.homeTeam)],
-            referee: 1
+            field: this.venues[(this.teams).indexOf(this.form.homeTeam)],
+            referee: 0
           }
         );
         this.$root.toast("Create Game", "Game been created successfully", "success");
@@ -166,6 +262,29 @@ export default {
         return;
       }
       this.CreateGame();
+    },
+    async UpdateScore() {
+      try {
+        const response = await this.axios.put(
+          "http://localhost:3000/users/Representative/updateScore",
+          {
+            gameID: this.form1.GameID,
+            homeTeamGoals: this.form1.homeTeamGoals,
+            awayTeamGoals: this.form1.awayTeamGoals
+          }
+        );
+        this.$root.toast("Update Score", "Game Score been updated successfully", "success");
+      } catch(error) {
+        this.$root.toast("Update Score", "Game ID given doesn't exists", "danger");
+        this.form1.submitError = err.response.data.message;
+      }
+    },
+    onUpdateScore() {
+      this.$v.form1.$touch();
+        if (this.$v.form1.$anyError) {
+          return;
+        }
+        this.UpdateScore();
     },
     async setTeams() {
       const response = await this.axios.get(
@@ -185,5 +304,11 @@ export default {
 </script>
 
 <style>
+
+.bonus {
+  margin-left: 50px;
+  color: black;
+  font-weight: bold;
+}
 
 </style>

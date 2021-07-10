@@ -2,13 +2,9 @@
   <div>
     <div class="teamPrev">
       <b-card
-        :title="teamname"
-        :img-src="logo"
-        img-alt="Image"
-        img-height="150px"
-        img-width="100px"
-        img-top>
+        :title="teamname">
         <b-list-group>
+          <img :src="logo" @click="teamPage(teamname)" style="height: 150px; width: 150px" />
           <b-list-group-item>Team ID: {{ teamID }}</b-list-group-item>
           <b-list-group-item>Short Name: {{ shortname }}</b-list-group-item>
           <b-list-group-item>Founded: {{ founded }}</b-list-group-item>

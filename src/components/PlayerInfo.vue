@@ -44,12 +44,7 @@ export default {
       }
     },
     TeamPage(team) {
-      try {
-        this.$emit.getTeamDetails(team);
-      } catch (error) {
-        this.$root.store.setTeam(team);
-        this.$router.push("/team");
-      }
+      this.$router.push({name: "team", params: {teamName: team}});
     },
   }, 
   mounted(){
